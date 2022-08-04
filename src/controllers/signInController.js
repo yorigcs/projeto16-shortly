@@ -12,8 +12,11 @@ const signInController = async (req, res) => {
       return res.sendStatus(401)
     }
     const token = jwt.sign({ email, password }, SECRET)
-    res.send(`Bearer ${token}`)
-    console.log(token)
+    const userData = {
+      name: user[0].name,
+      token: `Bearer ${token}`
+    }
+    res.send(userData)
   } catch (err) {
     console.log(err)
   }

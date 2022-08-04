@@ -1,8 +1,9 @@
 import { Router } from 'express'
+import shortenMiddleware from '../middlewares/shortenMiddleware.js'
 
 const router = Router()
 
-router.get('/urls/shorten')
+router.post('/urls/shorten', shortenMiddleware)
 router.delete('/urls/:id')
 router.get('/users/me')
 

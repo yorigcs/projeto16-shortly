@@ -6,7 +6,7 @@ const SECRET = process.env.SECRET_KEY || '$1AIKSO%6A41'
 const EXPIRED_TIME = process.env.TOKEN_EXP_TIME || '1h'
 
 const createToken = (payload) => {
-  return jwt.sign(payload, SECRET, EXPIRED_TIME)
+  return jwt.sign(payload, SECRET, { expiresIn: EXPIRED_TIME })
 }
 
 const decodeToken = (token) => {

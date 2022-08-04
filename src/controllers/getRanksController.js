@@ -1,4 +1,4 @@
-import connection from '../database/postgressSQL'
+import connection from '../database/postgressSQL.js'
 
 const getRanksController = async (req, res) => {
   const query = `

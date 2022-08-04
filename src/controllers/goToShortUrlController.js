@@ -4,7 +4,7 @@ const goToShortUrlController = async (req, res) => {
   const { shortUrl } = req.params
   try {
     const query = `
-    SELECT l.views, l.url, u.visit_count 
+    SELECT l.views, l.url
     FROM links l 
     JOIN users u 
     ON l.user_id = u.id 

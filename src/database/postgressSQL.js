@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const { Pool } = pg
-const isDeploy = process.env.IS_DEPLOY
+const isDeploy = true
 const databaseConfigDev = {
   connectionString: process.env.DATABASE_URL_DEV
 }

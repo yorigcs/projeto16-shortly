@@ -1,9 +1,6 @@
 import connection from '../database/postgressSQL.js'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
-dotenv.config()
-const SECRET = process.SECRET_KEY || '$1AIKSO%6A41'
+import { createToken } from '../services/jwtToken.js'
 const signInController = async (req, res) => {
   const { email, password } = req.body
   try {
@@ -11,7 +8,7 @@ const signInController = async (req, res) => {
     if (!user[0] || !bcrypt.compareSync(password, user[0]?.password)) {
       return res.sendStatus(401)
     }
-    const token = jwt.sign({ id: user[0].id, email, password }, SECRET)
+    const token = createToken({ id: user[0].id, email, password })
     const userData = {
       name: user[0].name,
       token: `Bearer ${token}`

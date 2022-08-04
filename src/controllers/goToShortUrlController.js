@@ -3,12 +3,23 @@ import connection from '../database/postgressSQL.js'
 const goToShortUrlController = async (req, res) => {
   const { shortUrl } = req.params
   try {
-    const { rows: url } = await connection.query('SELECT * FROM links WHERE short_url =$1', [shortUrl])
+    const query = `
+    SELECT l.views, l.url,l.user_id , u.visit_count 
+    FROM links l 
+    JOIN users u 
+    ON l.user_id = u.id 
+    AND l.short_url = $1`
+
+    const { rows: url } = await connection.query(query, [shortUrl])
     if (!url[0]) {
       return res.sendStatus(404)
     }
     const views = url[0].views + 1
+    const visitCount = url[0].visit_count + 1
+    const userId = url[0].user_id
     await connection.query('UPDATE links SET views = $1 WHERE short_url =$2', [views, shortUrl])
+    await connection.query('UPDATE users SET visit_count = $1 WHERE id =$2', [visitCount, userId])
+
     res.redirect(url[0].url)
   } catch (err) {
     return res.sendStatus(500)

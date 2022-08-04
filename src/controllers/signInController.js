@@ -11,7 +11,7 @@ const signInController = async (req, res) => {
     if (!user[0] || !bcrypt.compareSync(password, user[0]?.password)) {
       return res.sendStatus(401)
     }
-    const token = jwt.sign({ email, password }, SECRET)
+    const token = jwt.sign({ id: user[0].id, email, password }, SECRET)
     const userData = {
       name: user[0].name,
       token: `Bearer ${token}`

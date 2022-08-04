@@ -9,6 +9,8 @@ const signUpMiddleware = async (req, res, next) => {
     }
     next()
   } catch (err) {
+    const { message } = err.details[0]
+    console.log(message)
     return res.status(422).send(err)
   }
 }

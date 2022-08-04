@@ -1,9 +1,10 @@
 import signUpMiddleware from '../middlewares/signUpMiddleware.js'
-import { Router } from 'express'
+import signUpController from '../controllers/signUpController.js'
 
+import { Router } from 'express'
 const router = Router()
 
-router.post('/signup', signUpMiddleware)
+router.post('/signup', signUpMiddleware, signUpController)
 router.post('/signin')
 router.get('/urls/:id')
 router.get('/urls/open/:shortUrl')

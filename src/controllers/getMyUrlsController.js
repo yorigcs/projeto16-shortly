@@ -3,19 +3,35 @@ import connection from '../database/postgressSQL.js'
 const getMyUrlsController = async (req, res) => {
   const { myId } = res.locals
   try {
-    const query = `
-    select u.id as user_id, u.name, u.visit_count, l.id as url_id ,l.short_url ,l.url ,l.views 
-    from users u 
-    join links l  
-    on u.id =l.user_id 
-    and u.id = $1`
+    let query = `
+    SELECT u.id, u.name, SUM(l.views) AS "visitCount"
+    FROM users u 
+    JOIN links l  
+    ON u.id = l.user_id 
+    AND u.id = $1
+    GROUP by u.id`
 
-    const { rows: url } = await connection.query(query, [myId])
-    if (!url[0]) {
+    const { rows: user } = await connection.query(query, [myId])
+    if (!user[0]) {
       return res.sendStatus(404)
     }
-    console.log(url)
+    query = `
+    SELECT l.id, l.short_url as "shortUrl" ,l.url ,l.views as "visitCount"
+    FROM links l where l.user_id = $1
+    `
+    const { rows: shortenedUrls } = await connection.query(query, [myId])
+
+    const userInfo = user[0]
+    const userData = {
+      id: userInfo.id,
+      name: userInfo.name,
+      visitCount: userInfo.visitCount,
+      shortenedUrls
+    }
+
+    res.send(userData)
   } catch (err) {
+    console.log(err)
     return res.sendStatus(500)
   }
 }

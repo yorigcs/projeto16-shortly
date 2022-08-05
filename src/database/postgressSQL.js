@@ -5,11 +5,11 @@ dotenv.config()
 const { Pool } = pg
 const isDeploy = true
 const databaseConfigDev = {
-  connectionString: process.env.DATABASE_URL_DEV
+  connectionString: process.env.DATABASE_URL
 }
 
 const databaseConfigDeploy = {
-  connectionString: process.env.DATABASE_URL_DEPLOY,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
